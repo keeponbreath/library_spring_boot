@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница поиска книги</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/books/search}">
+    <label for="pointer">Введите название книги:</label>
+    <input type="text" th:name="pointer" id="pointer"/>
+    <br/>
+    <input type="submit" value="Найти книгу"/>
+</form>
+
+<br/>
+
+<div th:each="book : ${founded}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getTitle() + ',' + book.getAuthor() + ', ' + book.getYearOfProd()}">user</a>
+</div>
+
+</body>
+</html>

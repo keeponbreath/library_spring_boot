@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница поиска человека</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/people/search}">
+    <label for="pointer">Введите ФИО:</label>
+    <input type="text" th:name="pointer" id="pointer"/>
+    <br/>
+    <input type="submit" value="Найти человека"/>
+</form>
+
+<br/>
+
+<div th:each="person : ${founded}">
+    <a th:href="@{/people/{id}(id=${person.getId()})}"
+       th:text="${person.getName() + ', ' + person.getDateOfBirth()}">user</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница электронной библиотеки</title>
+</head>
+<body>
+
+<form th:method="GET" th:action="@{/people}">
+  <input type="submit" value="К списку пользователей"/>
+</form>
+
+<br/>
+
+<form th:method="GET" th:action="@{/books}">
+  <input type="submit" value="Список всех книг"/>
+</form>
+
+</body>
+</html>
