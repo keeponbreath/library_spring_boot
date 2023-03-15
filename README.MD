@@ -10,11 +10,12 @@ _В местной библиотеке хотят перейти на цифр�
 ___
 ### Технологии, которые я использовал для реализации:
 - Java 19
-- Maven;
+- Maven
 - Spring Boot
 - Hibernate
 - Spring Data JPA
 - Spring Web
+- Spring Security
 - Thymeleaf
 - PostgreSQL
 ___
