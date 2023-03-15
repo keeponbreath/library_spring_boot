@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница регистрации</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+    <label for="name">Введите ФИО: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <br/>
+
+    <link rel="stylesheet" type="text/css" href="http://cssworld.ru/t/css/js/datepicker/cssworld.ru-xcal.css"/>
+    <script type="text/javascript" src="http://cssworld.ru/t/css/js/datepicker/cssworld.ru-xcal.js"></script>
+
+    <label for="date_of_birth">Дата рождения: </label>
+    <input type="text" th:field="*{dateOfBirth}" id="date_of_birth" onClick="xCal(this, '/', 0)"
+           onKeyUp="xCal()"/>
+    <div style="color:red" th:if="${#fields.hasErrors('dateOfBirth')}"
+         th:errors="*{dateOfBirth}">Date of birth Error</div>
+    <br/>
+    <label for="username">Введите имя пользователя: </label>
+    <input type="text" th:field="*{username}" id="username">
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password">
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+    <br/>
+    <input type="submit" value="Зарегистрироваться">
+
+</form>
+</body>
+</html>

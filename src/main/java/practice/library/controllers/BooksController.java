@@ -1,16 +1,17 @@
 package practice.library.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import practice.library.models.Book;
 import practice.library.models.Person;
+import practice.library.security.PersonDetails;
 import practice.library.services.BookService;
 import practice.library.services.PeopleService;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
@@ -31,6 +32,8 @@ public class BooksController {
                         @RequestParam(value = "page", required = false) Integer pageNumber,
                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
                         @RequestParam(value = "sort_by_year", required = false) boolean sorted) {
+        roleChecker(model);
+
         if(pageNumber == null || booksPerPage == null) {
             model.addAttribute("books", bookService.index(sorted));
         } else {
@@ -42,12 +45,18 @@ public class BooksController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model,
                        @ModelAttribute("person") Person person) {
+        roleChecker(model);
+
         model.addAttribute("book", bookService.show(id));
         if (bookService.getOwner(id) != null) {
             model.addAttribute("owner", bookService.getOwner(id));
         } else {
-            model.addAttribute("people", peopleService.index());
+            if (model.containsAttribute("isAdmin")){
+                model.addAttribute("people", peopleService.index());
+            }
+
         }
+
         return "books/show";
     }
 
@@ -115,5 +124,12 @@ public class BooksController {
                            @ModelAttribute("person") Person person) {
         bookService.takeBook(id, person);
         return "redirect:/books/" + id;
+    }
+
+    public void roleChecker(Model model) {
+        if(peopleService.getPersonDetails().getPerson().getRole().equals("ROLE_ADMIN"))
+            model.addAttribute("isAdmin", true);
+        else
+            model.addAttribute("isUser", true);
     }
 }

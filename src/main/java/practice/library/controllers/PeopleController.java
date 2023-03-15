@@ -1,14 +1,16 @@
 package practice.library.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import practice.library.models.Person;
+import practice.library.services.BookService;
 import practice.library.services.PeopleService;
 
-import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/people")
@@ -16,9 +18,12 @@ public class PeopleController {
 
     private final PeopleService peopleService;
 
+    private final BookService bookService;
+
     @Autowired
-    public PeopleController(PeopleService peopleService) {
+    public PeopleController(PeopleService peopleService, BookService bookService) {
         this.peopleService = peopleService;
+        this.bookService = bookService;
     }
 
     @GetMapping()
@@ -26,6 +31,8 @@ public class PeopleController {
                         @RequestParam(value = "page", required = false) Integer pageNumber,
                         @RequestParam(value = "people_per_page", required = false) Integer peoplePerPage,
                         @RequestParam(value = "sort_by_year", required = false) boolean sorted) {
+        roleChecker(model);
+
         if(pageNumber == null || peoplePerPage == null) {
             model.addAttribute("people", peopleService.index(sorted));
         } else {
@@ -36,6 +43,8 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
+        roleChecker(model);
+
         model.addAttribute("person", peopleService.show(id));
         model.addAttribute("books", peopleService.getBooks(id));
         return "people/show";
@@ -71,7 +80,7 @@ public class PeopleController {
             return "people/edit";
 
         peopleService.update(id, person);
-        return "redirect:/people";
+        return "redirect:/people/{id}";
     }
 
     @DeleteMapping("/{id}")
@@ -92,5 +101,12 @@ public class PeopleController {
                          Model model) {
         model.addAttribute("founded", peopleService.search(pointer));
         return "people/search";
+    }
+
+    public void roleChecker(Model model) {
+        if(peopleService.getPersonDetails().getPerson().getRole().equals("ROLE_ADMIN"))
+            model.addAttribute("isAdmin", true);
+        else
+            model.addAttribute("isUser", true);
     }
 }

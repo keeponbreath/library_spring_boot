@@ -1,10 +1,11 @@
 package practice.library.models;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+
 import java.util.Date;
 import java.util.List;
 
@@ -22,10 +23,21 @@ public class Person {
     @Size(min = 2, max = 100, message = "Имя не должно быть короче 2 символов или содержать более 100 символов")
     private String name;
 
+    @Column(name = "username")
+    @NotEmpty
+    @Size(min = 2, max = 100, message = "Имя пользователя не должно быть короче 2 символов или содержать более 100 символов")
+    private String username;
+
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date dateOfBirth;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Book> books;
@@ -33,8 +45,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(String name, Date dateOfBirth) {
+    public Person(String name, String username, Date dateOfBirth) {
         this.name = name;
+        this.username = username;
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -54,12 +67,36 @@ public class Person {
         this.name = name;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Book> getBooks() {

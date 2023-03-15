@@ -1,7 +1,9 @@
 package practice.library.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.library.models.Book;
@@ -18,8 +20,12 @@ public class BookService {
 
     private final BooksRepository booksRepository;
 
-    public BookService(BooksRepository booksRepository) {
+    private final PeopleService peopleService;
+
+    @Autowired
+    public BookService(BooksRepository booksRepository, PeopleService peopleService) {
         this.booksRepository = booksRepository;
+        this.peopleService = peopleService;
     }
 
     public List<Book> index(boolean sorted) {
@@ -44,17 +50,22 @@ public class BookService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void save(Book book) {
         booksRepository.save(book);
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(long id, Book updatedBook) {
+        updatedBook.setUpdatedAt(new Date());
+        updatedBook.setUpdatedBy(peopleService.getPersonDetails().getUsername());
         updatedBook.setId(id);
         booksRepository.save(updatedBook);
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(long id) {
         booksRepository.deleteById(id);
     }

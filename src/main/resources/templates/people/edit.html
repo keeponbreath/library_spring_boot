@@ -21,6 +21,17 @@
   <div style="color:red" th:if="${#fields.hasErrors('dateOfBirth')}"
        th:errors="*{dateOfBirth}">Date of birth Error</div>
   <br/>
+
+  <label for="username">Введите имя пользователя: </label>
+  <input type="text" th:field="*{username}" id="username"/>
+  <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Nickname Error</div>
+  <br/>
+
+  <label for="password">Введите пароль: </label>
+  <input type="password" th:field="*{password}" id="password"/>
+  <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+  <br/>
+
   <input type="submit" value="Обновить данные"/>
 </form>
 

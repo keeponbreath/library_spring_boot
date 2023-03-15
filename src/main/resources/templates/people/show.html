@@ -34,8 +34,14 @@
 
 <br/>
 
+<div th:if="${isAdmin}">
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">
   <input type="submit" value="Удалить пользователя"/>
+</form>
+</div>
+
+<form th:action="@{/logout}" th:method="POST">
+  <input type="submit" value="Выйти" />
 </form>
 </body>
 </html>

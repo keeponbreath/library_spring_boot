@@ -9,13 +9,16 @@
 
 <div th:if="${owner}">
   <span>Книга сейчас у: </span> <span th:text="${owner.getName()}">Owner name</span>
+  <a th:if="${isAdmin}">
   <form th:method="PATCH" th:action="@{/books/{id}/free(id=${book.getId()})}">
     <input type="submit" value="Освободить книгу"/>
   </form>
+  </a>
 </div>
 
 <div th:if="${people}">
   <span>Эта книга свободна</span>
+  <a th:if="${isAdmin}">
   <form th:method="PATCH" th:action="@{/books/{id}/take(id=${book.getId()})}">
     <label for="person">Выберите человека</label>
     <select th:object="${person}" th:field="*{id}" id="person">
@@ -24,16 +27,21 @@
     </select>
     <input type="submit" value="Назначить"/>
   </form>
+  </a>
 </div>
 
 <br/>
 
+<div th:if="${isAdmin}">
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
   <input type="submit" value="Редактировать книгу"/>
 </form>
+</div>
 
+<div th:if="${isAdmin}">
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
   <input type="submit" value="Удалить книгу"/>
 </form>
+</div>
 </body>
 </html>

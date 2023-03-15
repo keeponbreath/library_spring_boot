@@ -1,4 +1,4 @@
-# E-Library
+# library_spring_boot
 ### Проект для самостоятельного выполнения из курса по Spring Framework от Neil Alishev
 ___
 Текст задания:<br/>
